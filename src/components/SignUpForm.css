@@ -1,0 +1,97 @@
+/* src/components/SignUpForm.css */
+.signup-form {
+  width: 450px;
+  margin: 50px auto;
+  padding: 40px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  color: white;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: white;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 50px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 16px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+
+input::placeholder,
+select::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+input:focus,
+select:focus {
+  background-color: rgba(255, 255, 255, 0.3);
+  outline: none;
+}
+
+button {
+  background-color: #00ff9f;
+  color: #1a2a6c;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  width: 100%;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.signup-form button:hover {
+  background-color: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.success-message {
+  color: #00ff9f;
+  margin-top: 20px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.error-message {
+  color: #ff4757;
+  font-weight: bold;
+  padding: 10px;
+  margin-top: 15px;
+  background-color: rgba(255, 71, 87, 0.2);
+  border-radius: 10px;
+}
+
+h2 {
+  font-size: 2.2rem;
+  margin-bottom: 25px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: white;
+}
