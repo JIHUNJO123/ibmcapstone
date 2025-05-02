@@ -1,6 +1,6 @@
 // src/components/ProfileCard/ProfileCard.js
 import React, { useEffect, useState, useRef, memo, useCallback } from "react";
-import { API_URL } from "../LoginForm";
+import { API_URL } from "../../config";
 import { useNavigate } from "react-router-dom";
 import "./ProfileCard.css";
 

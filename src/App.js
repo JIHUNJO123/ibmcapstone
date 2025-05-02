@@ -12,6 +12,7 @@ import { AuthProvider } from "./AuthContext";
 import Notification from "./components/Notification/Notification";
 import ProfileCard from "./components/ProfileCard/ProfileCard"; // Import ProfileCard
 import ReportsLayout from "./components/ReportsLayout/ReportsLayout"; // Import ReportsLayout
+import Profile from "./components/Profile"; // Profile 컴포넌트 import 추가
 
 function App() {
   const [appointment, setAppointment] = useState(null);
@@ -48,7 +49,7 @@ function App() {
               />
               <Route path="/reviews" element={<Reviews />} />
               <Route path="/reports" element={<ReportsLayout />} />
-              <Route path="/profile" element={<ProfileCard />} />
+              <Route path="/profile" element={<Profile />} /> {/* Profile 컴포넌트 라우트 추가 */}
             </Routes>
           </Notification>
         </div>

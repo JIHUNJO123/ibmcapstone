@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../config";
 import "./SignUpForm.css";
-
-const API_URL = "http://localhost:8181"; // Replace with your backend URL
 
 function SignUpForm() {
   const [role, setRole] = useState("");
@@ -12,11 +11,21 @@ function SignUpForm() {
   const [error, setError] = useState(""); // State for error messages
   const navigate = useNavigate();
 
+  console.log("API URL is:", API_URL); // API URL 확인용 디버깅
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(""); // Clear previous errors
 
+    // 입력값 검증
+    if (!role || !name || !email || !password) {
+      setError("모든 필드를 입력해주세요.");
+      return;
+    }
+
     try {
+      console.log("Submitting form with:", { role, name, email, password: "***" });
+
       const response = await fetch(`${API_URL}/api/auth/register`, {
         method: "POST",
         headers: {
@@ -25,10 +34,13 @@ function SignUpForm() {
         body: JSON.stringify({ role, name, email, password }),
       });
 
+      console.log("Response status:", response.status);
       const json = await response.json();
+      console.log("Response data:", json);
 
-      if (json.authtoken) {
+      if (json.success && json.authtoken) {
         // Successful signup
+        console.log("회원가입 성공!");
         sessionStorage.setItem("auth-token", json.authtoken);
         sessionStorage.setItem("name", name);
         sessionStorage.setItem("email", email);
@@ -37,9 +49,11 @@ function SignUpForm() {
         window.location.reload();
       } else {
         // Signup failed
+        console.log("회원가입 실패:", json);
         setError(json.error || "Signup failed");
       }
     } catch (error) {
+      console.error("회원가입 중 에러 발생:", error);
       setError("An error occurred during signup");
     }
   };
@@ -54,6 +68,7 @@ function SignUpForm() {
             id="role"
             value={role}
             onChange={(e) => setRole(e.target.value)}
+            required
           >
             <option value="">Select Role</option>
             <option value="doctor">Doctor</option>
@@ -68,6 +83,7 @@ function SignUpForm() {
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
         </div>
         <div className="form-group">
@@ -77,6 +93,7 @@ function SignUpForm() {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </div>
         <div className="form-group">
@@ -86,12 +103,13 @@ function SignUpForm() {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
+            minLength="6"
           />
         </div>
         <button type="submit">Sign Up</button>
       </form>
-      {error && <p className="error-message">{error}</p>}{" "}
-      {/* Display error message */}
+      {error && <p className="error-message">{error}</p>}
     </div>
   );
 }
