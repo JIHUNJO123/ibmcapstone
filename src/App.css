@@ -2,6 +2,12 @@ body {
   margin: 0;
   font-family: 'Poppins', sans-serif; 
   background-color: #f8f9fa;
+  color: #000000 !important;
+}
+
+/* 모든 텍스트 색상을 검정색으로 변경 */
+body, p, h1, h2, h3, h4, h5, h6, span, div, label, button, input, textarea, select, a {
+  color: #000000 !important;
 }
 
 /* Landing Page */

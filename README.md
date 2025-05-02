@@ -37,8 +37,3 @@
 - **JavaScript** – Frontend logic  
 - **Git & GitHub** – Version control and collaboration  
 
-## Author
-
-- JIHUN JO
-
-

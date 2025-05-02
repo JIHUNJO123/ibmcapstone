@@ -1,25 +1,29 @@
-import React, { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { API_URL } from "../config";
 import "./LoginForm.css";
-import { AuthContext } from "../AuthContext";
-
-export const API_URL = "http://localhost:8181";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { handleLogin } = useContext(AuthContext);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setError("");
     setLoading(true);
 
+    if (!email || !password) {
+      setError("이메일과 비밀번호를 모두 입력해주세요.");
+      setLoading(false);
+      return;
+    }
+
     try {
+      console.log("Sending login request for:", email);
+      
       const response = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: {
@@ -28,40 +32,39 @@ function LoginForm() {
         body: JSON.stringify({ email, password }),
       });
 
+      console.log("Login response status:", response.status);
+      
       const json = await response.json();
+      console.log("Login response:", json);
 
       if (json.authtoken) {
+        // 로그인 성공
+        console.log("Login successful");
         sessionStorage.setItem("auth-token", json.authtoken);
         sessionStorage.setItem("name", json.name);
+        sessionStorage.setItem("email", json.email);
         sessionStorage.setItem("role", json.role);
-        sessionStorage.setItem("email", email); // Add this line!
-
-        setLoading(false);
         navigate("/");
-        handleLogin();
+        window.location.reload();
       } else {
-        setError(json.error || "Login failed");
+        // 로그인 실패
+        console.error("Login failed:", json.error);
+        setError(json.error || "이메일 또는 비밀번호가 올바르지 않습니다.");
         setLoading(false);
       }
     } catch (error) {
-      setError("An error occurred during login");
+      console.error("Login error:", error);
+      setError("서버 연결에 실패했습니다. 서버가 실행 중인지 확인해주세요.");
       setLoading(false);
     }
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
   };
 
   return (
     <div className="login-form">
       <h2>Login</h2>
-      <p>
-        Are you a new member? <Link to="/signup">Sign Up Here</Link>
-      </p>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">Email:</label>
           <input
             type="email"
             id="email"
@@ -71,36 +74,20 @@ function LoginForm() {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <div className="password-input">
-            <input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <span
-              className="password-toggle"
-              onClick={togglePasswordVisibility}
-            >
-              {showPassword ? "👁️" : "👁️‍🗨️"}
-            </span>
-          </div>
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
         </div>
-        {error && <p className="error-message">{error}</p>}
-        <div className="button-group">
-          <button type="submit" className="login-button" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
-          </button>
-          <button type="reset" className="reset-button">
-            Reset
-          </button>
-        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? "로그인 중..." : "Login"}
+        </button>
       </form>
-      <p>
-        <Link to="/forgot-password">Forgot Password?</Link>
-      </p>
+      {error && <p className="error-message">{error}</p>}
     </div>
   );
 }

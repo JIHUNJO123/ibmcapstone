@@ -1,75 +1,94 @@
 // src/components/Navbar.js
-import React, { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import LogoutButton from "./LogoutButton";
-import { AuthContext } from "../AuthContext";
-import "./Navbar.css"; // Import Navbar.css
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "./Navbar.css";
+import DropdownMenu from "./DropdownMenu";
 
 function Navbar() {
-  const { isLoggedIn, handleLogout } = useContext(AuthContext);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [userName, setUserName] = useState("User"); // Default to "User" if no email
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (isLoggedIn) {
-      const email = sessionStorage.getItem("email");
-      if (email) {
-        setUserName(email);
-      }
+    // 로그인 상태 체크
+    const token = sessionStorage.getItem("auth-token");
+    const name = sessionStorage.getItem("name");
+    const email = sessionStorage.getItem("email");
+    const role = sessionStorage.getItem("role");
+    
+    if (token) {
+      setIsLoggedIn(true);
+      setUserName(name || "User");
+      setUserEmail(email || "");
+      setUserRole(role || "User");
     }
-  }, [isLoggedIn]);
+  }, []);
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const handleLogout = () => {
+    // 로그아웃 처리
+    sessionStorage.removeItem("auth-token");
+    sessionStorage.removeItem("name");
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("role");
+    setIsLoggedIn(false);
+    navigate("/");
   };
 
   return (
     <nav className="navbar">
-      <div className="logo">StayHealthy</div>
-      <ul className="nav-links">
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/appointments">Appointments</Link>
-        </li>
-        <li>
-          <a href="#">Health Blog</a>
-        </li>
-        <li>
-          <Link to="/reviews">Reviews</Link>
-        </li>
-      </ul>
-      <div className="nav-buttons">
-        {isLoggedIn ? (
-          <div className="user-dropdown">
-            <button className="user-trigger" onClick={toggleDropdown}>
-              {userName}
-            </button>
-            {isDropdownOpen && (
-              <ul className="dropdown-menu">
-                <li>
-                  <Link to="/profile">Your Profile</Link>
-                </li>
-                <li>
-                  <Link to="/reports">Your Reports</Link>
-                </li>
-                <li>
-                  <button onClick={handleLogout}>Logout</button>
-                </li>
-              </ul>
-            )}
-          </div>
-        ) : (
-          <>
-            <Link to="/signup" className="signup-btn">
-              Sign Up
+      <div className="navbar-container">
+        <Link to="/" className="navbar-logo">
+          Healthy Lives
+        </Link>
+        
+        <ul className="nav-menu">
+          <li className="nav-item">
+            <Link to="/" className="nav-link">
+              Home
             </Link>
-            <Link to="/login" className="login-btn">
-              Login
+          </li>
+          <li className="nav-item">
+            <Link to="/appointments" className="nav-link">
+              Appointments
             </Link>
-          </>
-        )}
+          </li>
+          <li className="nav-item">
+            <Link to="/reviews" className="nav-link">
+              Reviews
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/reports" className="nav-link">
+              Reports
+            </Link>
+          </li>
+          
+          {!isLoggedIn ? (
+            <>
+              <li className="nav-item">
+                <Link to="/login" className="nav-link">
+                  Login
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/signup" className="nav-link">
+                  Sign Up
+                </Link>
+              </li>
+            </>
+          ) : (
+            <li className="nav-item nav-user">
+              <DropdownMenu 
+                userName={userName} 
+                userEmail={userEmail} 
+                userRole={userRole} 
+                onLogout={handleLogout}
+              />
+            </li>
+          )}
+        </ul>
       </div>
     </nav>
   );
