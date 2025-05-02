@@ -1,0 +1,48 @@
+/* src/components/Reviews.css */
+.reviews-section {
+  padding: 20px;
+  max-width: 800px; /* Limit the width for better readability */
+  margin: 0 auto; /* Center the content */
+}
+
+.reviews-section h2 {
+  margin-bottom: 20px;
+  text-align: center; /* Center the heading */
+}
+
+.reviews-section table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+.reviews-section th,
+.reviews-section td {
+  border: 1px solid #ddd;
+  padding: 12px; /* Increase padding for better spacing */
+  text-align: left;
+}
+
+.reviews-section th {
+  background-color: #f2f2f2;
+}
+
+.reviews-section button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Add a smooth transition */
+}
+
+.reviews-section button:hover {
+  background-color: #0056b3;
+}
+
+.reviews-section button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

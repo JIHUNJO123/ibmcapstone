@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/healthylives/static/css/main.37bfe58e.css",
+    "main.js": "/healthylives/static/js/main.72dbcfa6.js",
+    "static/media/3d-medical-background-with-dna-strands.jpg": "/healthylives/static/media/3d-medical-background-with-dna-strands.2e5a6d4b10a593e14949.jpg",
+    "index.html": "/healthylives/index.html",
+    "main.37bfe58e.css.map": "/healthylives/static/css/main.37bfe58e.css.map",
+    "main.72dbcfa6.js.map": "/healthylives/static/js/main.72dbcfa6.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.37bfe58e.css",
+    "static/js/main.72dbcfa6.js"
+  ]
+}
